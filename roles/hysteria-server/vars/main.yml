@@ -1,0 +1,2 @@
+docker_dir:  '{{ hysteria_server_lib_dir }}/docker/hysteria'
+config_file: '{{ hysteria_server_lib_dir }}/config/hysteria/hysteria.json'
