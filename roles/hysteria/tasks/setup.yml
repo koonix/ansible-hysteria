@@ -6,8 +6,7 @@
     owner: root
     group: root
   loop:
-    - path: '{{ docker_dir }}'
-    - path: '{{ config_file | ansible.builtin.dirname }}'
+    - path: '{{ instance_dir }}'
 
 - name: Install docker templates
   ansible.builtin.template:
@@ -18,19 +17,16 @@
     group: root
   loop:
     - src: docker-compose.yml.j2
-      dest: '{{ docker_dir }}/docker-compose.yml'
+      dest: '{{ instance_dir }}/docker-compose.yml'
 
-- name: Install config files
+- name: Install config file
   ansible.builtin.copy:
-    content: '{{ item.content }}'
-    dest: '{{ item.dest }}'
-    mode: '{{ item.mode | default("644") }}'
+    content: '{{ instance.config | ansible.builtin.to_nice_json }}'
+    dest: '{{ instance_dir }}/config.json'
+    mode: '600'
     owner: root
     group: root
-  loop:
-    - content: '{{ hysteria_client_config | ansible.builtin.to_json(indent=4, sort_keys=True) }}'
-      dest: '{{ config_file }}'
-  notify: hysteria_client_changed
+  register: config
 
 - name: Remove extraneous files from docker dir
   ansible.builtin.shell:
@@ -47,16 +43,22 @@
   changed_when: "'removed' in rmextra.stdout"
   vars:
     # IMPORTANT: update the 'keep' list to reflect the files that we want to keep
-    dir: '{{ docker_dir }}'
+    dir: '{{ instance_dir }}'
     keep:
       - docker-compose.yml
+      - config.json
 
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
+- name: Stop Hysteria
+  ansible.builtin.command:
+    argv: [ docker, compose, stop ]
+    chdir: '{{ instance_dir }}'
+  register: compose
+  changed_when: '"Stopped" in compose.stderr'
+  when: config.changed
 
 - name: Start Hysteria
   ansible.builtin.command:
     argv: [ docker, compose, up, --detach, --remove-orphans ]
-    chdir: '{{ docker_dir }}'
+    chdir: '{{ instance_dir }}'
   register: compose
   changed_when: '"Started" in compose.stderr'

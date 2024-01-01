@@ -1,7 +1,0 @@
-hysteria_server_lib_dir: /var/lib/ansible-hysteria-server
-hysteria_server_ports_appendix: []
-hysteria_server_volumes_appendix: []
-hysteria_server_compose_volumes_appendix: {}
-hysteria_server_compose_services_hysteria_appendix: {}
-hysteria_server_compose_services_appendix: {}
-hysteria_server_compose_appendix: {}

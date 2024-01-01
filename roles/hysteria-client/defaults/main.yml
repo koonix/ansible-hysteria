@@ -1,7 +1,0 @@
-hysteria_client_lib_dir: /var/lib/ansible-hysteria-client
-hysteria_client_volumes_appendix: []
-hysteria_client_compose_volumes_appendix: {}
-hysteria_client_ports_appendix: []
-hysteria_client_compose_services_hysteria_appendix: {}
-hysteria_client_compose_services_appendix: {}
-hysteria_client_compose_appendix: {}

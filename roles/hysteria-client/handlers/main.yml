@@ -1,7 +1,0 @@
-- name: Stop Hysteria
-  ansible.builtin.command:
-    argv: [ docker, compose, stop ]
-    chdir: '{{ docker_dir }}'
-  register: compose
-  changed_when: '"Stopped" in compose.stderr'
-  listen: hysteria_client_changed

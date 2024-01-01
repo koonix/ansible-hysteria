@@ -1,8 +1,0 @@
-- name: Remove docker images to trigger a rebuild
-  ansible.builtin.shell:
-    chdir: '{{ docker_dir }}'
-    cmd: |
-      docker compose down
-      docker image rm -- $(docker compose config --images) ||:
-  changed_when: true
-  notify: hysteria_server_docker_clean
