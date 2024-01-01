@@ -1,0 +1,28 @@
+- name: Converge
+  hosts: all
+  become: true
+  roles:
+    - koonix.docker.docker
+    - koonix.hysteria.hysteria
+
+  vars:
+
+    hysteria_instances:
+
+      - name: hysteria-client-1
+        version: v2.2.3
+        config:
+          server: localhost:1000
+          auth: password
+          lazy: true
+          socks5:
+            listen: localhost:2000
+
+      - name: hysteria-client-2
+        version: v2.2.3
+        config:
+          server: localhost:1000
+          auth: password
+          lazy: true
+          socks5:
+            listen: localhost:2000
