@@ -1,3 +1,13 @@
+- name: Create dirs
+  ansible.builtin.file:
+    state: directory
+    path: '{{ item.path }}'
+    mode: '{{ item.mode | default("700") }}'
+    owner: root
+    group: root
+  loop:
+    - path: '{{ hysteria_lib_dir }}'
+
 - name: Remove extraneous Hysteria instances
   ansible.builtin.shell:
     chdir: '{{ dir }}'
