@@ -12,9 +12,9 @@ Setup one or more Hysteria instances [using Docker](https://hub.docker.com/r/tob
 | Variable                                                  | Required | Description |
 |-----------------------------------------------------------|:--------:|-------------|
 | `hysteria_instances`                                      | ✔        | List of instances of Hysteria to configure and run. |
+| `hysteria_instances[].name`                               | ✔        | Title of the Hysteria instance. |
 | `hysteria_instances[].version`                            | ✔        | Docker image [tag](https://hub.docker.com/r/tobyxdd/hysteria/tags) to use. |
 | `hysteria_instances[].config`                             | ✔        | Hysteria's configuration object. |
-| `hysteria_instances[].name`                               | ✔        | Title of the Hysteria instance. |
 | `hysteria_instances[].compose_project_name`               |          | Name of the docker compose project. Set to an empty string to not explicitly define. Defaults to the value of `hysteria_instances[].instance_name`. |
 | `hysteria_instances[].container_name`                     |          | Name of Hysteria's docker container. Set to an empty string to not explicitly define. Defaults to the value of `hysteria_instances[].instance_name`. |
 | `hysteria_instances[].ports_appendix`                     |          | List of extra docker port mappings for Hysteria's docker container. Default: `[]`. |
