@@ -1,11 +1,11 @@
 {% set hysteria_compose_project_name = instance.compose_project_name | default(instance.name) %}
 {% set hysteria_container_name = instance.container_name | default(instance.name) %}
-{% set hysteria_ports_appendix = instance.ports_appendix | default([]) %}
-{% set hysteria_volumes_appendix = instance.volumes_appendix | default([]) %}
-{% set hysteria_compose_volumes_appendix = instance.compose_volumes_appendix | default({}) %}
-{% set hysteria_compose_services_hysteria_appendix = instance.compose_services_hysteria_appendix | default({}) %}
-{% set hysteria_compose_services_appendix = instance.compose_services_appendix | default({}) %}
-{% set hysteria_compose_appendix = instance.compose_appendix | default({}) %}
+{% set hysteria_ports = instance.ports | default([]) %}
+{% set hysteria_volumes = instance.volumes | default([]) %}
+{% set hysteria_compose_volumes = instance.compose_volumes | default({}) %}
+{% set hysteria_compose_services_hysteria = instance.compose_services_hysteria | default({}) %}
+{% set hysteria_compose_services = instance.compose_services | default({}) %}
+{% set hysteria_compose = instance.compose | default({}) %}
 
 {% if hysteria_compose_project_name != '' %}
 name: {{ hysteria_compose_project_name | ansible.builtin.to_yaml }}
@@ -14,7 +14,7 @@ name: {{ hysteria_compose_project_name | ansible.builtin.to_yaml }}
 version: '3.8'
 
 volumes:
-  {{ hysteria_compose_volumes_appendix | ansible.builtin.to_nice_yaml | indent(2) }}
+  {{ hysteria_compose_volumes | ansible.builtin.to_nice_yaml | indent(2) }}
 
 services:
 
@@ -28,24 +28,24 @@ services:
 {% endif %}
 
     ports:
-      {{ hysteria_ports_appendix | ansible.builtin.to_nice_yaml | indent(6) }}
+      {{ hysteria_ports | ansible.builtin.to_nice_yaml | indent(6) }}
 
     volumes:
       - {{ ( instance_dir + '/config.json:/etc/hysteria.json' ) | ansible.builtin.to_yaml }}
-{% if hysteria_volumes_appendix | length > 0 %}
-      {{ hysteria_volumes_appendix | ansible.builtin.to_nice_yaml | indent(6) }}
+{% if hysteria_volumes | length > 0 %}
+      {{ hysteria_volumes | ansible.builtin.to_nice_yaml | indent(6) }}
 {% endif %}
 
-{% if hysteria_compose_services_hysteria_appendix | length > 0 %}
-    {{ hysteria_compose_services_hysteria_appendix | ansible.builtin.to_nice_yaml | indent(4) }}
+{% if hysteria_compose_services_hysteria | length > 0 %}
+    {{ hysteria_compose_services_hysteria | ansible.builtin.to_nice_yaml | indent(4) }}
 {% endif %}
 
-{% if hysteria_compose_services_appendix | length > 0 %}
-  {{ hysteria_compose_services_appendix | ansible.builtin.to_nice_yaml | indent(2) }}
+{% if hysteria_compose_services | length > 0 %}
+  {{ hysteria_compose_services | ansible.builtin.to_nice_yaml | indent(2) }}
 {% endif %}
 
-{% if hysteria_compose_appendix | length > 0 %}
-{{ hysteria_compose_appendix | ansible.builtin.to_nice_yaml | indent(0) }}
+{% if hysteria_compose | length > 0 %}
+{{ hysteria_compose | ansible.builtin.to_nice_yaml | indent(0) }}
 {% endif %}
 
 # vim:expandtab:shiftwidth=2
