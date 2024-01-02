@@ -9,6 +9,8 @@ Collection of Ansible roles for setting up
 
 Setup one or more Hysteria instances [using Docker](https://hub.docker.com/r/tobyxdd/hysteria).
 
+This role handles instance removals as well.
+
 | Variable                                                  | Required | Description |
 |-----------------------------------------------------------|:--------:|-------------|
 | `hysteria_instances`                                      | ✔        | List of instances of Hysteria to configure and run. |
