@@ -11,7 +11,7 @@ Setup one or more Hysteria instances [using Docker](https://hub.docker.com/r/tob
 
 | Variable                                                  | Required | Description |
 |-----------------------------------------------------------|:--------:|-------------|
-| `hysteria_instances`                                      | ✔        | Array of instances of Hysteria to configure and run. |
+| `hysteria_instances`                                      | ✔        | List of instances of Hysteria to configure and run. |
 | `hysteria_instances[].version`                            | ✔        | Docker image [tag](https://hub.docker.com/r/tobyxdd/hysteria/tags) to use. |
 | `hysteria_instances[].config`                             | ✔        | Hysteria's configuration object. |
 | `hysteria_instances[].name`                               | ✔        | Title of the Hysteria instance. |
