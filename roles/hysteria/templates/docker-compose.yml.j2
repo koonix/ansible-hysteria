@@ -21,7 +21,7 @@ services:
   hysteria:
     image: {{ ( 'tobyxdd/hysteria:' + instance.version ) | ansible.builtin.to_yaml }}
     restart: unless-stopped
-    command: [ client, --config, /etc/hysteria.json ]
+    command: [ {{ instance.mode | ansible.builtin.to_yaml }}, --config, /etc/hysteria.json ]
 
 {% if hysteria_container_name != '' %}
     container_name: {{ hysteria_container_name | ansible.builtin.to_yaml }}
