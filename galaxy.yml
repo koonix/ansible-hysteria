@@ -1,6 +1,6 @@
 namespace: koonix
 name: hysteria
-version: 0.4.1
+version: 0.4.2
 description: Collection of roles for setting up Hysteria.
 repository: https://github.com/koonix/ansible-hysteria
 issues:     https://github.com/koonix/ansible-hysteria/issues
