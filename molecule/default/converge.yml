@@ -11,6 +11,7 @@
 
       - name: hysteria-client-1
         version: v2.2.3
+        type: client
         config:
           server: localhost:1000
           auth: password
@@ -20,6 +21,7 @@
 
       - name: hysteria-client-2
         version: v2.2.3
+        type: client
         config:
           server: localhost:1000
           auth: password
