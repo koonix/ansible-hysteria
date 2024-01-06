@@ -30,8 +30,8 @@ services:
       {{ volumes | ansible.builtin.to_nice_yaml | indent(6) }}
 {% endif %}
 
-{% if compose_services_hysteria | length > 0 %}
-    {{ compose_services_hysteria | ansible.builtin.to_nice_yaml | indent(4) }}
+{% if compose_hysteria | length > 0 %}
+    {{ compose_hysteria | ansible.builtin.to_nice_yaml | indent(4) }}
 {% endif %}
 
 {% if compose_services | length > 0 %}
