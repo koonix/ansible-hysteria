@@ -1,51 +1,45 @@
-{% set hysteria_compose_project_name = instance.compose_project_name | default(instance.name) %}
-{% set hysteria_container_name = instance.container_name | default(instance.name) %}
-{% set hysteria_ports = instance.ports | default([]) %}
-{% set hysteria_volumes = instance.volumes | default([]) %}
-{% set hysteria_compose_volumes = instance.compose_volumes | default({}) %}
-{% set hysteria_compose_services_hysteria = instance.compose_services_hysteria | default({}) %}
-{% set hysteria_compose_services = instance.compose_services | default({}) %}
-{% set hysteria_compose = instance.compose | default({}) %}
+{% set container_name = instance.container_name | default(instance.name) %}
+{% set restart = instance.restart | default('unless-stopped') %}
+{% set ports = instance.ports | default([]) %}
+{% set volumes = instance.volumes | default([]) %}
 
-{% if hysteria_compose_project_name != '' %}
-name: {{ hysteria_compose_project_name | ansible.builtin.to_yaml }}
-{% endif %}
+{% set compose = instance.compose | default({}) %}
+{% set compose_hysteria = instance.compose_hysteria | default({}) %}
+{% set compose_services = instance.compose_services | default({}) %}
+{% set compose_project_name = instance.compose_project_name | default(instance.name) %}
+{% set compose_version = instance.compose_version | default('3.8') %}
 
-version: '3.8'
-
-volumes:
-  {{ hysteria_compose_volumes | ansible.builtin.to_nice_yaml | indent(2) }}
+name: {{ compose_project_name | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}
+version: {{ compose_version | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}
 
 services:
 
   hysteria:
-    image: {{ ( 'tobyxdd/hysteria:' + instance.version ) | ansible.builtin.to_yaml }}
-    restart: unless-stopped
-    command: [ {{ instance.type | ansible.builtin.to_yaml }}, --config, /etc/hysteria.json ]
 
-{% if hysteria_container_name != '' %}
-    container_name: {{ hysteria_container_name | ansible.builtin.to_yaml }}
-{% endif %}
+    image: {{ ( 'tobyxdd/hysteria:' + instance.version ) | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}
+    container_name: {{ container_name | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}
+    restart: {{ restart | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}
+    command: [ {{ instance.type | ansible.builtin.to_yaml | ansible.builtin.regex_replace('\n$', '') }}, --config, /etc/hysteria.json ]
 
     ports:
-      {{ hysteria_ports | ansible.builtin.to_nice_yaml | indent(6) }}
+      {{ ports | ansible.builtin.to_nice_yaml | indent(6) }}
 
     volumes:
       - {{ ( instance_dir + '/config.json:/etc/hysteria.json' ) | ansible.builtin.to_yaml }}
-{% if hysteria_volumes | length > 0 %}
-      {{ hysteria_volumes | ansible.builtin.to_nice_yaml | indent(6) }}
+{% if volumes | length > 0 %}
+      {{ volumes | ansible.builtin.to_nice_yaml | indent(6) }}
 {% endif %}
 
-{% if hysteria_compose_services_hysteria | length > 0 %}
-    {{ hysteria_compose_services_hysteria | ansible.builtin.to_nice_yaml | indent(4) }}
+{% if compose_services_hysteria | length > 0 %}
+    {{ compose_services_hysteria | ansible.builtin.to_nice_yaml | indent(4) }}
 {% endif %}
 
-{% if hysteria_compose_services | length > 0 %}
-  {{ hysteria_compose_services | ansible.builtin.to_nice_yaml | indent(2) }}
+{% if compose_services | length > 0 %}
+  {{ compose_services | ansible.builtin.to_nice_yaml | indent(2) }}
 {% endif %}
 
-{% if hysteria_compose | length > 0 %}
-{{ hysteria_compose | ansible.builtin.to_nice_yaml | indent(0) }}
+{% if compose | length > 0 %}
+{{ compose | ansible.builtin.to_nice_yaml | indent(0) }}
 {% endif %}
 
 # vim:expandtab:shiftwidth=2
