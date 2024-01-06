@@ -1,6 +1,6 @@
-# koonix.hysteria
+# ansible-hysteria
 
-Collection of Ansible roles for setting up
+Ansible roles for setting up
 [Hysteria](https://github.com/apernet/hysteria).
 
 ## Roles
