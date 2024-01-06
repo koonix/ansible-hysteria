@@ -1,4 +1,4 @@
-- name: Create dirs
+- name: '[{{ instance.name }}] Create dirs'
   ansible.builtin.file:
     state: directory
     path: '{{ item.path }}'
@@ -8,7 +8,7 @@
   loop:
     - path: '{{ instance_dir }}'
 
-- name: Install docker templates
+- name: '[{{ instance.name }}] Install docker templates'
   ansible.builtin.template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
@@ -19,7 +19,7 @@
     - src: docker-compose.yml.j2
       dest: '{{ instance_dir }}/docker-compose.yml'
 
-- name: Install config file
+- name: '[{{ instance.name }}] Install config file'
   ansible.builtin.copy:
     content: '{{ instance.config | ansible.builtin.to_nice_json }}'
     dest: '{{ instance_dir }}/config.json'
@@ -28,7 +28,7 @@
     group: root
   register: config
 
-- name: Remove extraneous files from docker dir
+- name: '[{{ instance.name }}] Remove extraneous files from docker dir'
   ansible.builtin.shell:
     chdir: '{{ dir }}'
     cmd: |
@@ -48,7 +48,7 @@
       - docker-compose.yml
       - config.json
 
-- name: Stop Hysteria
+- name: '[{{ instance.name }}] Stop Hysteria'
   ansible.builtin.command:
     argv: [ docker, compose, stop ]
     chdir: '{{ instance_dir }}'
@@ -56,7 +56,7 @@
   changed_when: '"Stopped" in compose.stderr'
   when: config.changed
 
-- name: Start Hysteria
+- name: '[{{ instance.name }}] Start Hysteria'
   ansible.builtin.command:
     argv: [ docker, compose, up, --detach, --remove-orphans ]
     chdir: '{{ instance_dir }}'
